@@ -29,7 +29,7 @@ public class Comment {
     private String content;
 
     @Column(name="create_date", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
     @Column(name="is_secret")
