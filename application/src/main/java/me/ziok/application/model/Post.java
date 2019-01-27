@@ -32,14 +32,14 @@ public class Post {
     @Column
     private int period; //모집 기간
 
-    @Column
-    private int number; //모집 인원 수
+//    @Column
+//    private int number; //모집 인원 수
 
     @Column
     private int fee; //요금
 
-    @Column
-    private String membership; //요금제
+//    @Column
+//    private String membership; //요금제
 
     @Column(name="create_date", updatable = false)
    // @Temporal(TemporalType.TIMESTAMP)
@@ -52,8 +52,8 @@ public class Post {
     @JoinColumn(name="account_id_fk",  updatable = false)
     private Account account;
 
-    @OneToMany
-    @JoinColumn(name="post_id_fk", updatable = false)
-    private List<Comment> comment;
+//    @OneToMany
+//    @JoinColumn(name="post_id_fk", updatable = false)
+//    private List<Comment> comment;
 
 }
