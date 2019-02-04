@@ -3,12 +3,13 @@ package me.ziok.application.security.oauth2;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import me.ziok.application.util.CookieUtils;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//todo: implement
+@Component
 public class HttpCookieOauth2AuthorizationRequestRepositoryImpl implements HttpCookieOauth2AuthorizationRequestRepository {
 
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
