@@ -2,6 +2,9 @@ package me.ziok.application.config;
 
 import me.ziok.application.security.CustomUserDetailsService;
 import me.ziok.application.security.JwtAuthenticationFilter;
+import me.ziok.application.security.RestAuthenticationEntryPoint;
+import me.ziok.application.security.TokenAuthenticationFilter;
+import me.ziok.application.security.oauth2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +32,22 @@ import org.springframework.web.filter.OncePerRequestFilter;
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //todo: di가 구현체에 직접 있는게 별로임. 방법 생각해보기.
     @Autowired
-    CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    @Qualifier("restAuthenticationEntryPoint")
-    AuthenticationEntryPoint unAuthorizedHandler;
+    private CustomOauth2AccountServiceImpl customOauth2AccountService;
+
+    @Autowired
+    private Oauth2AuthenticationSuccessHandlerImpl oauth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private Oauth2AuthenticationFailureHandlerImpl oauth2AuthenticationFailureHandler;
+
+    @Autowired
+    private HttpCookieOauth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
+
 
     @Bean
     public OncePerRequestFilter oncePerRequestFilter() {
@@ -64,16 +77,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
         .cors()
             .and()
-        .csrf()
-            .disable()
-        .exceptionHandling()
-            .authenticationEntryPoint(unAuthorizedHandler)
-            .and()
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
+        .csrf()
+            .disable()
+        .formLogin()
+            .disable()
+        .httpBasic()
+            .disable()
+        .exceptionHandling()
+            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+            .and()
         .authorizeRequests()
             .antMatchers("/",
+                    "/error",
                     "/favicon.ico",
                     "/**/*.png",
                     "/**/*.gif",
@@ -83,12 +101,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/**/*.css",
                     "/**/*.js")
                 .permitAll()
-            .antMatchers("/api/auth/**")
-                .permitAll()
-            .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
+            .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
             .anyRequest()
-                .authenticated();
+                .authenticated()
+            .and()
+        .oauth2Login()
+            .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository)
+                .and()
+            .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+            .userInfoEndpoint()
+                .userService(customOauth2AccountService)
+                .and()
+            .successHandler(oauth2AuthenticationSuccessHandler)
+            .failureHandler(oauth2AuthenticationFailureHandler);
+
 
         http.addFilterBefore(oncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
 
