@@ -2,8 +2,11 @@ package me.ziok.application.controller;
 
 
 import me.ziok.application.model.Account;
+import me.ziok.application.security.CurrentAccount;
+import me.ziok.application.security.UserPrincipal;
 import me.ziok.application.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,6 +38,11 @@ public class AccountController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Account deleteAccount(@PathVariable(value = "id") Long id) {
         return accountService.deleteAccount(id);
+    }
 
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('USER')")
+    public Account getCurrentAccount(@CurrentAccount UserPrincipal userPrincipal) {
+        return accountService.loadAccountById(userPrincipal.getId());
     }
 }

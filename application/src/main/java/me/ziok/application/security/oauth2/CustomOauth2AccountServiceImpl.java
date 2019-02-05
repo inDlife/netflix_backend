@@ -30,6 +30,7 @@ public class CustomOauth2AccountServiceImpl extends DefaultOAuth2UserService imp
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
+            //todo: 여기는 왜 authenticationException이 전혀 일어날 가능성이 없는지 확인.
 //        } catch (AuthenticationException ex) {
 //            throw ex;
         } catch (Exception ex) {

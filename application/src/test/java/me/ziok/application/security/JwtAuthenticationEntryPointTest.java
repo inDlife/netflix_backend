@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
 
 public class JwtAuthenticationEntryPointTest {
 
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Before
     public void setUp() {
-        authenticationEntryPoint = new JwtAuthenticationEntryPoint();
+        authenticationEntryPoint = new RestAuthenticationEntryPoint();
     }
 
     @Test

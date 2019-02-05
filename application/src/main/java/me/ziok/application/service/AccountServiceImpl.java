@@ -38,6 +38,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account registerAccount(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setProviderType(AuthProviderType.LOCAL);
+
+        return accountRepository.save(account);
+    }
+
+    @Override
     public Account deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElse(null);
 

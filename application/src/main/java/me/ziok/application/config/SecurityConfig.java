@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     CustomUserDetailsService userDetailsService;
 
     @Autowired
-    @Qualifier("jwtAuthenticationEntryPoint")
+    @Qualifier("restAuthenticationEntryPoint")
     AuthenticationEntryPoint unAuthorizedHandler;
 
     @Bean

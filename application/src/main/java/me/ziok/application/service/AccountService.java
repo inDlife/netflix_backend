@@ -8,6 +8,7 @@ public interface AccountService {
     Account loadAccountByEmail(String email);
 
     Account saveAccount(Account account);
+    Account registerAccount(Account account);
     Account deleteAccount(Long id);
     //todo: update에 nickname 설정하는 것 넣기
     Account updateAccount(Account account);
