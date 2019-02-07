@@ -6,6 +6,7 @@ import me.ziok.application.model.Account;
 import me.ziok.application.payload.*;
 import me.ziok.application.security.TokenProvider;
 import me.ziok.application.service.AccountService;
+import me.ziok.application.service.SocialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,6 +40,9 @@ public class AuthController {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    SocialService socialService;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateAccount(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -49,6 +53,26 @@ public class AuthController {
                         loginRequest.getPassword()
                 )
         );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    @PostMapping("facein")
+    public ResponseEntity<?> authenticateFaceAccount(@Valid @RequestBody LoginRequest loginRequest) {
+
+        System.out.println("authenticateFaceAccount");
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        System.out.println("authenticated");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -73,6 +97,27 @@ public class AuthController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/api/users/{username}")
                 .buildAndExpand(account.getEmail()).toUri();
+
+        System.out.println("location");
+        System.out.println(location);
+
+        return ResponseEntity.created(location).body(new ApiResponse(true, "Account registered successfully"));
+
+    }
+
+    @PostMapping("/facebook")
+    public ResponseEntity<?> registerFacebookAccount(@Valid @RequestBody SignUpRequest2 signUpRequest2) {
+        Account account = socialService.translateAccessTokenToAccount(signUpRequest2.getToken());
+        account.setPassword("4430515s");
+
+        accountService.registerAccount(account);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/api/users/{username}")
+                .buildAndExpand(account.getEmail()).toUri();
+
+        System.out.println("location");
+        System.out.println(location);
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "Account registered successfully"));
 

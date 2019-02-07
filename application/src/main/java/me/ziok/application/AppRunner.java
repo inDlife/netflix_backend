@@ -16,16 +16,16 @@ public class AppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String accessToken = "dddd";
-        Facebook facebook = new FacebookTemplate(accessToken);
-
-        User userProfile = facebook.userOperations().getUserProfile();
-        if (userProfile == null) {
-            System.out.println("null point exception!!!");
-        } else {
-            System.out.println("success!!");
-            System.out.println(userProfile.getName());
-        }
+//        String accessToken = "dddd";
+//        Facebook facebook = new FacebookTemplate(accessToken);
+//
+//        User userProfile = facebook.userOperations().getUserProfile();
+//        if (userProfile == null) {
+//            System.out.println("null point exception!!!");
+//        } else {
+//            System.out.println("success!!");
+//            System.out.println(userProfile.getName());
+//        }
 
 
 
