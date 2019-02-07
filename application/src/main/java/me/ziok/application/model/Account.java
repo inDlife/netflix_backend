@@ -28,8 +28,8 @@ public class Account {
     @Email
     private String email; //아이디(이메일형식)
 
-    @NonNull
-    @NotBlank
+//    @NonNull
+//    @NotBlank
     @JsonIgnore
     @Column
     private String password;

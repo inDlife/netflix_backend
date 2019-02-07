@@ -23,6 +23,7 @@ public class JwtTokenProvider implements TokenProvider{
 
     @Override
     public String generateToken(Authentication authentication) {
+        System.out.println("generateToken");
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();

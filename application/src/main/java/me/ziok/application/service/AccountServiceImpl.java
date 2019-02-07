@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account saveAccount(Account account) {
 
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
+//        account.setPassword(passwordEncoder.encode(account.getPassword()));
 
         return accountRepository.save(account);
 

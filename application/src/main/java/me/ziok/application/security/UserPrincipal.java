@@ -27,7 +27,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     @NonNull
     private String email;
 
-    @NonNull
+//    @NonNull
     @JsonIgnore
     private String password;
 
@@ -44,7 +44,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return new UserPrincipal(
                 account.getId(),
                 account.getEmail(),
-                account.getPassword(),
+//                account.getPassword(),
                 authorities
         );
     }

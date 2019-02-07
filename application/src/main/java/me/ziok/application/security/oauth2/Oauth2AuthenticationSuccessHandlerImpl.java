@@ -35,6 +35,11 @@ public class Oauth2AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticat
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
+        System.out.println("onAuthenticationSuccess");
+        System.out.println("targetUrl");
+        System.out.println(targetUrl);
+
+
 
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -42,7 +47,9 @@ public class Oauth2AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticat
         }
 
         clearAuthenticationAttributes(request, response);
+        System.out.println("working 1");
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        System.out.println("working 2");
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {

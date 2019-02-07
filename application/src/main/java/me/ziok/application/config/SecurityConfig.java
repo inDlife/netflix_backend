@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    public OncePerRequestFilter oncePerRequestFilter() {
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
 
@@ -121,7 +121,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .failureHandler(oauth2AuthenticationFailureHandler);
 
 
-        http.addFilterBefore(oncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
         ;
     }
